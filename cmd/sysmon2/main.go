@@ -17,6 +17,16 @@ import (
 	"time"
 )
 
+var (
+	cfgPath string
+)
+
+
+func init() {
+
+	flag.StringVar(&cfgPath, "configPath", "./cfg/config.yml", "Path to configuration file without name.")
+}
+
 func main() {
 
 	flag.Parse()
@@ -31,7 +41,7 @@ func main() {
 		La: nil,
 	}
 
-	conf, _ := config.LoadCfg()
+	conf, _ := config.LoadCfg(cfgPath)
 
 	sysmon := &sysmon2.Sysmon2{
 		Conf:     &conf,
@@ -45,11 +55,8 @@ func main() {
 	sysmonServer := &server.SysmonServer{
 		Conf:     &conf,
 		Stat: sysmon.Snapshots,
-		//LARepo:   laRepo,
-		//CPURepo:  cpuRepo,
 	}
 
-	//sysmonServer.Start
 
 	srv := grpc.NewServer()
 

@@ -2,6 +2,7 @@ package config
 
 import (
 	conf "github.com/spf13/viper"
+	"log"
 )
 
 type Config struct {
@@ -17,16 +18,21 @@ type Config struct {
 	Metric map[string]bool `yaml:"metric"`
 }
 
-func LoadCfg() (Config, error) {
+func LoadCfg(cfgPath string) (Config, error) {
 	config := Config{}
-	conf.SetConfigName("config")
+	//conf.SetConfigName(cfgName)
+	conf.AddConfigPath("/etc/sysmon/")
 	conf.AddConfigPath("./cfg/")
+	conf.AddConfigPath(cfgPath)
+
+
+
 	if err := conf.ReadInConfig(); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	if err := conf.Unmarshal(&config); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	return config, nil
