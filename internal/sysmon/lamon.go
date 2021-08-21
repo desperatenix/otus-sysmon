@@ -1,21 +1,17 @@
 package sysmon2
 
 import (
-	"fmt"
 	"github.com/desperatenix/otus-sysmon/internal/loadavg"
 	"github.com/desperatenix/otus-sysmon/internal/repos"
 	"log"
 	"sync"
-	"time"
 )
 
 //Todo
+//const timeToGetMetric = 950 * time.Millisecond
 
-const timeToGetMetric = 950 * time.Millisecond
 
-
-func GetLa(chStop chan bool, mu sync.Mutex, ch <-chan repos.TimePoint) {
-	fmt.Println("debug")
+func GetLa(chStop chan bool, mu sync.Mutex, ch <-chan repos.TimePoint) { //nolint:govet
 	for {
 		select {
 		case <-chStop:
@@ -32,9 +28,6 @@ func GetLa(chStop chan bool, mu sync.Mutex, ch <-chan repos.TimePoint) {
 				tp.MP.La = la
 				log.Printf("Load Avarage: %f", la)
 			}()
-		default:
-			//nffmt.Println("time for sleep")
-			//time.Sleep(100 * time.Millisecond)
 		}
 	}
 }

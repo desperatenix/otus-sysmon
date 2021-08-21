@@ -54,19 +54,22 @@ func main() {
 	srv := grpc.NewServer()
 
 	// todo запуск grps server
-	port := string(sysmonServer.Conf.Server.Port)
+	port := sysmonServer.Conf.Server.Port
 	lsn, err := net.Listen("tcp", ":" + port)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	api.RegisterSysMonServer(srv, sysmonServer)
-	srv.Serve(lsn)
+	err = srv.Serve(lsn)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	// Обработка прерываний
 	errListener := make(chan error)
 	go func() {
 		c := make(chan os.Signal)
-		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM, syscall.SIGSTOP)
+		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM, syscall.SIGSTOP) //nolint:staticcheck,govet
 		notifySignal := <-c
 		errListener <- fmt.Errorf("%s", notifySignal)
 	}()

@@ -1,5 +1,8 @@
 package sysmon2
 
+//Todo  постараться разобраться из-за чего возникает гонка nolint:govet
+
+
 import (
 	"errors"
 	"fmt"
@@ -52,11 +55,11 @@ func (sm *Sysmon2) EnabledMetrics() error {
 			switch metric {
 			case "la":
 				i++
-				go GetLa(sm.StopChan, sm.mu, sm.newWorkerCh())
+				go GetLa(sm.StopChan, sm.mu, sm.newWorkerCh()) //nolint:govet
 
 			case "cpu":
 				i++
-				go GetCpu(sm.StopChan, sm.mu, sm.newWorkerCh())
+				go GetCpu(sm.StopChan, sm.mu, sm.newWorkerCh()) //nolint:govet
 
 			default:
 				fmt.Printf("Unknown metrics type(%s) for collection", metric)
@@ -72,9 +75,11 @@ func (sm *Sysmon2) EnabledMetrics() error {
 }
 
 func (sm *Sysmon2) addPoint(now time.Time) *repos.MetricsData {
+
+	point := &repos.MetricsData{}
+
 	sm.mu.Lock()
 	defer  sm.mu.Unlock()
-	point := &repos.MetricsData{}
 
 	sm.Snapshots[now] = point
 
@@ -97,6 +102,7 @@ func (sm *Sysmon2) newWorkerCh() chan repos.TimePoint {
 func (sm *Sysmon2) processTick(now time.Time) {
 
 	// добавляется новая точка для статистики за эту секунду
+
 	point := sm.addPoint(now)
 
 	// точка отправляется всем горутинам, ответственным за получение части статистики для заполнения

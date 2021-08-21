@@ -40,7 +40,6 @@ func (s *SysmonServer) GetStats(data *api.StatsRequest, stream api.SysMon_GetSta
 
 
 	for {
-
 		for t, m := range s.Stat {
 			err := stream.Send(&api.Stats{
 				Time: timestamppb.New(t),
@@ -63,6 +62,5 @@ func (s *SysmonServer) GetStats(data *api.StatsRequest, stream api.SysMon_GetSta
 
 		time.Sleep(time.Duration(data.N) * time.Second)
 	}
-	return nil
 }
 
