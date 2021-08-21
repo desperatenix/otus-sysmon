@@ -1,0 +1,13 @@
+---
+collectors:
+  maxTimeStorage: 300
+
+log:
+  level: "INFO"
+
+server:
+  port: 8080
+
+metric:
+  la: true
+  cpu: true
