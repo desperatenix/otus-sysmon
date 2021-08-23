@@ -1,8 +1,9 @@
 package config
 
 import (
-	conf "github.com/spf13/viper"
 	"log"
+
+	conf "github.com/spf13/viper"
 )
 
 type Config struct {
@@ -20,12 +21,10 @@ type Config struct {
 
 func LoadCfg(cfgPath string) (Config, error) {
 	config := Config{}
-	//conf.SetConfigName(cfgName)
+	// conf.SetConfigName(cfgName)
 	conf.AddConfigPath("/etc/sysmon/")
 	conf.AddConfigPath("./cfg/")
 	conf.AddConfigPath(cfgPath)
-
-
 
 	if err := conf.ReadInConfig(); err != nil {
 		log.Fatal(err)

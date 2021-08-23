@@ -14,7 +14,6 @@ func get() (*Stats, error) {
 	return collectCPUStats()
 }
 
-
 func collectCPUStats() (*Stats, error) {
 	var cpuLoad C.host_cpu_load_info_data_t
 	var count C.mach_msg_type_number_t = C.HOST_CPU_LOAD_INFO_COUNT
@@ -23,19 +22,17 @@ func collectCPUStats() (*Stats, error) {
 		return nil, fmt.Errorf("host_statistics failed: %d", ret)
 	}
 
-
-
 	cpu := Stats{}
 
 	user := float64(cpuLoad.cpu_ticks[C.CPU_STATE_USER])
 	system := float64(cpuLoad.cpu_ticks[C.CPU_STATE_SYSTEM])
 	idle := float64(cpuLoad.cpu_ticks[C.CPU_STATE_IDLE])
 
-	total := user+system+idle
+	total := user + system + idle
 
-	cpu.User = user/total*100
-	cpu.System = system/total*100
-	cpu.Idle = idle/total*100
+	cpu.User = user / total * 100
+	cpu.System = system / total * 100
+	cpu.Idle = idle / total * 100
 	cpu.Total = total
 
 	return &cpu, nil

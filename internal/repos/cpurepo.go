@@ -1,8 +1,9 @@
 package repos
 
 import (
-	"github.com/desperatenix/otus-sysmon/internal/cpu"
 	"time"
+
+	"github.com/desperatenix/otus-sysmon/internal/cpu"
 )
 
 // CPUStats represents load average values
@@ -17,10 +18,9 @@ type CPURepo struct {
 	SP []*cpu.Stats
 }
 
-func (sr *CPURepo) Save(timestamp time.Time, metric *cpu.Stats)  {
+func (sr *CPURepo) Save(timestamp time.Time, metric *cpu.Stats) {
 	sr.SP = append(sr.SP, metric)
 }
-
 
 func (sr *CPURepo) Get() []*cpu.Stats {
 	return sr.SP

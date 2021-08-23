@@ -1,19 +1,20 @@
 package repos
 
 import (
+	"time"
+
 	"github.com/desperatenix/otus-sysmon/internal/cpu"
 	"github.com/desperatenix/otus-sysmon/internal/loadavg"
-	"time"
 )
 
 type MetricsData struct {
-	La   *loadavg.Stats
-	Cpu       *cpu.Stats
+	La  *loadavg.Stats
+	Cpu *cpu.Stats
 }
 
 type TimePoint struct {
 	Time time.Time
-	MP *MetricsData
+	MP   *MetricsData
 }
 
 type Snapshots map[time.Time]*MetricsData

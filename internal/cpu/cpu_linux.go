@@ -1,11 +1,11 @@
 package cpu
 
 import (
-"fmt"
-	"github.com/desperatenix/otus-sysmon/internal/common"
+	"fmt"
 	"strconv"
-"strings"
+	"strings"
 
+	"github.com/desperatenix/otus-sysmon/internal/common"
 )
 
 func get() (*Stats, error) {
@@ -53,14 +53,12 @@ func parseCPU(content []string) (*Stats, error) {
 		return nil, fmt.Errorf("cannot parse steal field: %w", err)
 	}
 
-
 	total := float64(user + nice + system + idle + iowait + irq + softirq + steal)
 
 	return &Stats{
 		Total:  total,
-		User:   float64(user)/total*100,
-		System: float64(system)/total*100,
-		Idle:   float64(idle)/total*100,
+		User:   float64(user) / total * 100,
+		System: float64(system) / total * 100,
+		Idle:   float64(idle) / total * 100,
 	}, nil
 }
-

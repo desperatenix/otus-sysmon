@@ -1,15 +1,15 @@
 package main
 
 import (
-"flag"
-"fmt"
+	"flag"
+	"fmt"
 )
 
 var (
 	buildDate = "UNKNOWN"
 	gitHash   = "UNKNOWN"
-	osSys = "UNKNOWN"
-	arch = "UNKNOWN"
+	osSys     = "UNKNOWN"
+	arch      = "UNKNOWN"
 )
 
 func printVersion() {

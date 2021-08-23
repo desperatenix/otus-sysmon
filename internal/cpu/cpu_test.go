@@ -8,7 +8,6 @@ import (
 )
 
 func TestCPU(t *testing.T) {
-
 	_, err := Get()
 	require.NoError(t, err)
 

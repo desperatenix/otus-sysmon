@@ -2,18 +2,19 @@ package server
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/desperatenix/otus-sysmon/api"
 	"github.com/desperatenix/otus-sysmon/internal/config"
 	"github.com/desperatenix/otus-sysmon/internal/repos"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"time"
 )
 
 type SysmonServer struct {
 	api.UnimplementedSysMonServer
-	Conf   *config.Config
+	Conf *config.Config
 	Stat repos.Snapshots
 }
 
@@ -38,20 +39,19 @@ func (s *SysmonServer) GetStats(data *api.StatsRequest, stream api.SysMon_GetSta
 		return status.Error(codes.InvalidArgument, fmt.Sprintf("M must be less than %v seconds", MaxTimeStorage))
 	}
 
-
 	for {
 		for t, m := range s.Stat {
 			err := stream.Send(&api.Stats{
 				Time: timestamppb.New(t),
 				LoadAvg: &api.LoadAvg{
-					Load1: m.La.Load1,
-					Load5: m.La.Load5,
+					Load1:  m.La.Load1,
+					Load5:  m.La.Load5,
 					Load15: m.La.Load15,
 				},
 				Cpu: &api.CPU{
-					User: m.Cpu.User,
+					User:   m.Cpu.User,
 					System: m.Cpu.System,
-					Idle: m.Cpu.Idle,
+					Idle:   m.Cpu.Idle,
 				},
 			})
 			if err != nil {
@@ -63,4 +63,3 @@ func (s *SysmonServer) GetStats(data *api.StatsRequest, stream api.SysMon_GetSta
 		time.Sleep(time.Duration(data.N) * time.Second)
 	}
 }
-

@@ -3,32 +3,28 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/desperatenix/otus-sysmon/api"
-	"github.com/desperatenix/otus-sysmon/internal/config"
-	"github.com/desperatenix/otus-sysmon/internal/repos"
-	"github.com/desperatenix/otus-sysmon/internal/server"
-	"github.com/desperatenix/otus-sysmon/internal/sysmon"
-	"google.golang.org/grpc"
 	"log"
 	"net"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/desperatenix/otus-sysmon/api"
+	"github.com/desperatenix/otus-sysmon/internal/config"
+	"github.com/desperatenix/otus-sysmon/internal/repos"
+	"github.com/desperatenix/otus-sysmon/internal/server"
+	"github.com/desperatenix/otus-sysmon/internal/sysmon"
+	"google.golang.org/grpc"
 )
 
-var (
-	cfgPath string
-)
-
+var cfgPath string
 
 func init() {
-
 	flag.StringVar(&cfgPath, "configPath", "./cfg/config.yml", "Path to configuration file without name.")
 }
 
 func main() {
-
 	flag.Parse()
 
 	if isVersionCommand() {
@@ -38,31 +34,29 @@ func main() {
 
 	mData := &repos.MetricsData{
 		Cpu: nil,
-		La: nil,
+		La:  nil,
 	}
 
 	conf, _ := config.LoadCfg(cfgPath)
 
 	sysmon := &sysmon2.Sysmon2{
-		Conf:     &conf,
+		Conf:        &conf,
 		MetricsData: mData,
-		StopChan: make(chan bool),
-		Snapshots: make(map[time.Time]*repos.MetricsData),
+		StopChan:    make(chan bool),
+		Snapshots:   make(map[time.Time]*repos.MetricsData),
 	}
 
 	sysmon.Start()
 
 	sysmonServer := &server.SysmonServer{
-		Conf:     &conf,
+		Conf: &conf,
 		Stat: sysmon.Snapshots,
 	}
 
-
 	srv := grpc.NewServer()
 
-	// todo запуск grps server
 	port := sysmonServer.Conf.Server.Port
-	lsn, err := net.Listen("tcp", ":" + port)
+	lsn, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatalln(err)
 	}

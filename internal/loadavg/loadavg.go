@@ -1,6 +1,5 @@
 package loadavg
 
-
 func Get() (*Stats, error) {
 	return get()
 }
@@ -9,4 +8,3 @@ func Get() (*Stats, error) {
 type Stats struct {
 	Load1, Load5, Load15 float64
 }
-

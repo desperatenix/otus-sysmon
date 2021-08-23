@@ -4,6 +4,7 @@ package api
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -70,8 +71,7 @@ type SysMonServer interface {
 }
 
 // UnimplementedSysMonServer must be embedded to have forward compatible implementations.
-type UnimplementedSysMonServer struct {
-}
+type UnimplementedSysMonServer struct{}
 
 func (UnimplementedSysMonServer) GetStats(*StatsRequest, SysMon_GetStatsServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetStats not implemented")

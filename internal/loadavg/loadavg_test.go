@@ -7,7 +7,6 @@ import (
 )
 
 func TestLoadAvg(t *testing.T) {
-
 	data, err := Get()
 	require.NoError(t, err)
 	require.NotNil(t, data)

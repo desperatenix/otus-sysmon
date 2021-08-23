@@ -7,11 +7,12 @@
 package api
 
 import (
+	reflect "reflect"
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -310,14 +311,17 @@ func file_sysmon_proto_rawDescGZIP() []byte {
 	return file_sysmon_proto_rawDescData
 }
 
-var file_sysmon_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_sysmon_proto_goTypes = []interface{}{
-	(*LoadAvg)(nil),               // 0: api.LoadAvg
-	(*CPU)(nil),                   // 1: api.CPU
-	(*Stats)(nil),                 // 2: api.Stats
-	(*StatsRequest)(nil),          // 3: api.StatsRequest
-	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
-}
+var (
+	file_sysmon_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+	file_sysmon_proto_goTypes  = []interface{}{
+		(*LoadAvg)(nil),               // 0: api.LoadAvg
+		(*CPU)(nil),                   // 1: api.CPU
+		(*Stats)(nil),                 // 2: api.Stats
+		(*StatsRequest)(nil),          // 3: api.StatsRequest
+		(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
+	}
+)
+
 var file_sysmon_proto_depIdxs = []int32{
 	4, // 0: api.Stats.time:type_name -> google.protobuf.Timestamp
 	0, // 1: api.Stats.load_avg:type_name -> api.LoadAvg

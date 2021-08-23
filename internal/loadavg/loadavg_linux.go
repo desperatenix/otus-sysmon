@@ -2,9 +2,10 @@ package loadavg
 
 import (
 	"fmt"
-	"github.com/desperatenix/otus-sysmon/internal/common"
 	"strconv"
 	"strings"
+
+	"github.com/desperatenix/otus-sysmon/internal/common"
 )
 
 // Read loadavg from /proc.
@@ -19,10 +20,10 @@ func get() (*Stats, error) {
 		return nil, err
 	}
 	return &Stats{
-		Load1: loads[0],
-		Load5: loads[1],
+		Load1:  loads[0],
+		Load5:  loads[1],
 		Load15: loads[2],
-		}, nil
+	}, nil
 }
 
 // Parse /proc loadavg and return 1m, 5m and 15m.

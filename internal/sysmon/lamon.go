@@ -1,17 +1,15 @@
 package sysmon2
 
 import (
-	"github.com/desperatenix/otus-sysmon/internal/loadavg"
-	"github.com/desperatenix/otus-sysmon/internal/repos"
 	"log"
 	"sync"
+
+	"github.com/desperatenix/otus-sysmon/internal/loadavg"
+	"github.com/desperatenix/otus-sysmon/internal/repos"
 )
 
-//Todo
-//const timeToGetMetric = 950 * time.Millisecond
-
-
-func GetLa(chStop chan bool, mu sync.RWMutex, ch <-chan repos.TimePoint) { //nolint:govet
+func GetLa(chStop chan bool, mu sync.RWMutex, ch <-chan repos.TimePoint, wg *sync.WaitGroup) { //nolint:govet
+	defer wg.Done()
 	for {
 		select {
 		case <-chStop:

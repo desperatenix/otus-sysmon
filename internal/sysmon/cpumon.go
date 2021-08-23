@@ -1,15 +1,15 @@
 package sysmon2
 
 import (
-	"fmt"
-	"github.com/desperatenix/otus-sysmon/internal/cpu"
-	"github.com/desperatenix/otus-sysmon/internal/repos"
 	"log"
 	"sync"
+
+	"github.com/desperatenix/otus-sysmon/internal/cpu"
+	"github.com/desperatenix/otus-sysmon/internal/repos"
 )
 
-func GetCpu(chStop chan bool, mu sync.RWMutex, ch <-chan repos.TimePoint) { //nolint:govet
-	fmt.Println("debug CPU")
+func GetCpu(chStop chan bool, mu sync.RWMutex, ch <-chan repos.TimePoint, wg *sync.WaitGroup) { //nolint:govet
+	defer wg.Done()
 	for {
 		select {
 		case <-chStop:

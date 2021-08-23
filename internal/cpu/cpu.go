@@ -7,4 +7,3 @@ type Stats struct {
 func Get() (*Stats, error) {
 	return get()
 }
-

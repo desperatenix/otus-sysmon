@@ -14,8 +14,10 @@ import (
 	grpcClient "github.com/desperatenix/otus-sysmon/api"
 )
 
-var metric, port, address string
-var n, m int
+var (
+	metric, port, address string
+	n, m                  int
+)
 
 func init() {
 	flag.StringVar(&metric, "show", "la", "Show metrics. Possible values: la|cpu")
@@ -43,13 +45,15 @@ func main() {
 	}
 }
 
-type printHeader func()
-type printStats func(stats *grpcClient.Stats)
+type (
+	printHeader func()
+	printStats  func(stats *grpcClient.Stats)
+)
 
 func runClient(ph printHeader, ps printStats) error {
 	ph()
 
-	conn, err := grpc.Dial(address + ":" + port, grpc.WithInsecure())
+	conn, err := grpc.Dial(address+":"+port, grpc.WithInsecure())
 	if err != nil {
 		return err
 	}
