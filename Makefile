@@ -12,5 +12,11 @@ LDFLAGS := -X main.buildDate=$(BUILD_DATE) -X main.gitHash=$(GIT_HASH) -X main.a
 proto:
 	protoc -I /usr/local/include -I schema --go-grpc_out=api --go_out=api sysmon.proto
 
+test:
+	go test -count=100 -race ./...
+
+lint:
+	golangci-lint run ./...
+
 build-server:
 	go build -v -o $(BIN) -ldflags "$(LDFLAGS)" ./cmd/sysmon2

@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-func GetCpu(chStop chan bool, mu sync.Mutex, ch <-chan repos.TimePoint) { //nolint:govet
+func GetCpu(chStop chan bool, mu sync.RWMutex, ch <-chan repos.TimePoint) { //nolint:govet
 	fmt.Println("debug CPU")
 	for {
 		select {
@@ -20,8 +20,8 @@ func GetCpu(chStop chan bool, mu sync.Mutex, ch <-chan repos.TimePoint) { //noli
 				if err != nil {
 					log.Print(err)
 				}
-				mu.Lock()
-				defer mu.Unlock()
+				mu.RLock()
+				defer mu.RUnlock()
 
 				tp.MP.Cpu = cpu
 				log.Printf("CPU USage: %f", cpu)

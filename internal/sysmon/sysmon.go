@@ -20,7 +20,7 @@ type Sysmon2 struct {
 	MetricsData *repos.MetricsData
 	StopChan chan bool
 	workerCh []chan<- repos.TimePoint
-	mu sync.Mutex
+	mu sync.RWMutex
 	Snapshots repos.Snapshots
 }
 
@@ -30,8 +30,7 @@ func (sm *Sysmon2) Start() {
 	sm.Snapshots= make(repos.Snapshots)
 
 	go func() {
-		err := sm.EnabledMetrics()
-		if err != nil {
+		if err := sm.EnabledMetrics(); err != nil {
 			log.Fatal(err)
 		}
 	}()
