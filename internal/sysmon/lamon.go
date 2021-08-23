@@ -8,7 +8,7 @@ import (
 	"github.com/desperatenix/otus-sysmon/internal/repos"
 )
 
-func GetLa(chStop chan bool, mu sync.RWMutex, ch <-chan repos.TimePoint, wg *sync.WaitGroup) { //nolint:govet
+func GetLa(chStop chan bool, mu *sync.Mutex, ch <-chan repos.TimePoint, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for {
 		select {
@@ -20,8 +20,8 @@ func GetLa(chStop chan bool, mu sync.RWMutex, ch <-chan repos.TimePoint, wg *syn
 				if err != nil {
 					log.Print(err)
 				}
-				mu.RLock()
-				defer mu.RUnlock()
+				mu.Lock()
+				defer mu.Unlock()
 
 				tp.MP.La = la
 				log.Printf("Load Avarage: %f", la)

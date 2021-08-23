@@ -1,11 +1,8 @@
 package sysmon2
 
-// Todo  постараться разобраться из-за чего возникает гонка nolint:govet
-
 import (
 	"errors"
 	"fmt"
-	//"github.com/desperatenix/otus-sysmon/internal/sysmon"
 	"log"
 	"sync"
 	"time"
@@ -19,12 +16,12 @@ type Sysmon2 struct {
 	MetricsData *repos.MetricsData
 	StopChan    chan bool
 	workerCh    []chan<- repos.TimePoint
-	mu          sync.RWMutex
+	mu          sync.Mutex
 	Snapshots   repos.Snapshots
 }
 
 func (sm *Sysmon2) Start() {
-	fmt.Println("daemon start")
+	log.Println("daemon start")
 
 	sm.Snapshots = make(repos.Snapshots)
 
@@ -56,12 +53,12 @@ func (sm *Sysmon2) EnabledMetrics() error {
 			case "la":
 				i++
 				wg.Add(1)
-				go GetLa(sm.StopChan, sm.mu, sm.newWorkerCh(), &wg) //nolint:govet
+				go GetLa(sm.StopChan, &sm.mu, sm.newWorkerCh(), &wg)
 
 			case "cpu":
 				i++
 				wg.Add(1)
-				go GetCPU(sm.StopChan, sm.mu, sm.newWorkerCh(), &wg) //nolint:govet
+				go GetCPU(sm.StopChan, &sm.mu, sm.newWorkerCh(), &wg)
 
 			default:
 				fmt.Printf("Unknown metrics type(%s) for collection", metric)
