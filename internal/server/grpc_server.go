@@ -24,19 +24,19 @@ func (s *SysmonServer) GetStats(data *api.StatsRequest, stream api.SysMon_GetSta
 	n := int(data.N)
 	m := int(data.M)
 
-	MaxTimeStorage := s.Conf.Collectors.MaxTimeStorage
+	maxTimeStorage := s.Conf.Collectors.MaxTimeStorage
 
 	if n <= 0 {
 		return status.Error(codes.InvalidArgument, "N must be greater than 0 seconds")
 	}
-	if n > MaxTimeStorage {
-		return status.Error(codes.InvalidArgument, fmt.Sprintf("N must be less than %v seconds", MaxTimeStorage))
+	if n > maxTimeStorage {
+		return status.Error(codes.InvalidArgument, fmt.Sprintf("N must be less than %v seconds", maxTimeStorage))
 	}
 	if m <= 0 {
 		return status.Error(codes.InvalidArgument, "M must be greater than 0 seconds")
 	}
-	if m > MaxTimeStorage {
-		return status.Error(codes.InvalidArgument, fmt.Sprintf("M must be less than %v seconds", MaxTimeStorage))
+	if m > maxTimeStorage {
+		return status.Error(codes.InvalidArgument, fmt.Sprintf("M must be less than %v seconds", maxTimeStorage))
 	}
 
 	for {

@@ -69,8 +69,8 @@ func main() {
 	// Обработка прерываний
 	errListener := make(chan error)
 	go func() {
-		c := make(chan os.Signal)
-		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM, syscall.SIGSTOP) //nolint:staticcheck,govet
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM, syscall.SIGSTOP) //nolint:staticcheck
 		notifySignal := <-c
 		errListener <- fmt.Errorf("%s", notifySignal)
 	}()

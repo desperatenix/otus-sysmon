@@ -8,7 +8,7 @@ import (
 	"github.com/desperatenix/otus-sysmon/internal/repos"
 )
 
-func GetCpu(chStop chan bool, mu sync.RWMutex, ch <-chan repos.TimePoint, wg *sync.WaitGroup) { //nolint:govet
+func GetCPU(chStop chan bool, mu sync.RWMutex, ch <-chan repos.TimePoint, wg *sync.WaitGroup) { //nolint:govet
 	defer wg.Done()
 	for {
 		select {

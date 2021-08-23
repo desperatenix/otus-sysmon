@@ -61,7 +61,7 @@ func (sm *Sysmon2) EnabledMetrics() error {
 			case "cpu":
 				i++
 				wg.Add(1)
-				go GetCpu(sm.StopChan, sm.mu, sm.newWorkerCh(), &wg) //nolint:govet
+				go GetCPU(sm.StopChan, sm.mu, sm.newWorkerCh(), &wg) //nolint:govet
 
 			default:
 				fmt.Printf("Unknown metrics type(%s) for collection", metric)
