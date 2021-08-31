@@ -1,0 +1,68 @@
+---
+name: SysMon builds
+
+on:
+  push:
+    branches:
+      - master
+      - working
+
+env:
+  GO111MODULE: "on"
+  GOPROXY: "https://proxy.golang.org"
+
+jobs:
+  lint:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Linters
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.42
+          args: --timeout=5m
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.16
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Get depedencies
+        run: go mod download
+
+      - name: Unit tests
+        run: go test -count=20 -race ./...
+
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.16
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Get dependencies
+        run: go mod download
+
+      - name: Build
+        run: make build-server

@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package api;
+option go_package = ".;api";
+
+import "google/protobuf/timestamp.proto";
+
+message LoadAvg {
+    double Load1 = 1;
+    double Load5 = 2;
+    double Load15 = 3;
+}
+
+message CPU {
+    double User = 1;
+    double System = 2;
+    double Idle = 3;
+}
+
+message Stats {
+    google.protobuf.Timestamp time = 1;
+    LoadAvg load_avg = 2;
+    CPU cpu = 3;
+}
+
+message StatsRequest {
+    int32 N = 1;
+    int32 M = 2;
+}
+
+service SysMon {
+    rpc GetStats (StatsRequest) returns (stream Stats) {}
+}
